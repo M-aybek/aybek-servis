@@ -1,17 +1,27 @@
-import './index.css';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import Header from './Header';
 import Hizmetler from './Hizmetler';
 import NedenBiz from './NedenBiz';
 import Iletisim from './Iletisim';
-
-function App() {
+import Hakkimda from './Hakkimda';
+function Anasayfa() {
   return (
     <div>
-      <Header />
       <Hizmetler />
       <NedenBiz />
-      <Iletisim />
     </div>
+  );
+}
+function App() {
+  return (
+    <BrowserRouter>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Anasayfa />} />
+        <Route path="/iletisim" element={<Iletisim />} />
+        <Route path="/hakkimda" element={<Hakkimda />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

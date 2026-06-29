@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 function Header() {
   return (
     <header className="bg-slate-900 text-white">
@@ -6,9 +7,14 @@ function Header() {
           <h1 className="text-2xl font-bold text-orange-500">🔧 Aybek Teknik Servis</h1>
           <p className="text-slate-400 text-sm">Profesyonel Tamir & Bakım Hizmetleri</p>
         </div>
-        <a href="tel:02584105020" className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition font-semibold">
-          📞 0258 410 50 20
-        </a>
+        <nav className="flex items-center gap-4">
+          <Link to="/" className="text-white hover:text-orange-500 transition">Anasayfa</Link>
+         <Link to="/hakkimda" className="text-white hover:text-orange-500 transition">Hakkimizda</Link>
+          <Link to="/iletisim" className="text-white hover:text-orange-500 transition">İletişim</Link>
+          <a href="tel:02584105020" className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition font-semibold">
+            📞 0258 410 50 20
+          </a>
+        </nav>
       </div>
     </header>
   );
