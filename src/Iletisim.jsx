@@ -6,8 +6,32 @@ function Iletisim() {
   const [telefon, setTelefon] = useState('');
   const [mesaj, setMesaj] = useState('');
   const [gonderildi, setGonderildi] = useState(false);
+  const [hata, setHata] = useState('');
 
   async function formGonder() {
+    setHata('');
+
+    if (isim.trim() === '') {
+      setHata('Lütfen adınızı girin.');
+      return;
+    }
+
+    if (telefon.trim() === '') {
+      setHata('Lütfen telefon numaranızı girin.');
+      return;
+    }
+
+    const telefonRegex = /^[0-9\s]{10,11}$/;
+    if (!telefonRegex.test(telefon)) {
+      setHata('Lütfen geçerli bir telefon numarası girin (sadece rakam).');
+      return;
+    }
+
+    if (mesaj.trim() === '') {
+      setHata('Lütfen mesajınızı girin.');
+      return;
+    }
+
     const { error } = await supabase
       .from('mesajlar')
       .insert([{ isim, telefon, mesaj }]);
@@ -17,6 +41,8 @@ function Iletisim() {
       setIsim('');
       setTelefon('');
       setMesaj('');
+    } else {
+      setHata('Bir hata oluştu, lütfen tekrar deneyin.');
     }
   }
 
@@ -47,27 +73,32 @@ function Iletisim() {
               <p className="text-green-400 text-center py-8">✅ Mesajınız alındı, en kısa sürede dönüş yapacağız!</p>
             ) : (
               <div className="space-y-4">
+                {hata && (
+                  <p className="bg-red-500/10 border border-red-500 text-red-400 px-4 py-3 rounded-lg text-sm">
+                    ⚠️ {hata}
+                  </p>
+                )}
                 <input
-                  type="text"
-                  placeholder="Adınız"
-                  value={isim}
-                  onChange={e => setIsim(e.target.value)}
-                  className="w-full bg-slate-700 text-white px-4 py-3 rounded-lg outline-none focus:ring-2 focus:ring-orange-500"
-                />
+  type="text"
+  placeholder="Adınız"
+  value={isim}
+  onChange={e => { setIsim(e.target.value); setHata(''); }}
+  className="w-full bg-slate-700 text-white px-4 py-3 rounded-lg outline-none focus:ring-2 focus:ring-orange-500"
+/>
                 <input
-                  type="text"
-                  placeholder="Telefon"
-                  value={telefon}
-                  onChange={e => setTelefon(e.target.value)}
-                  className="w-full bg-slate-700 text-white px-4 py-3 rounded-lg outline-none focus:ring-2 focus:ring-orange-500"
-                />
-                <textarea
-                  placeholder="Mesajınız"
-                  value={mesaj}
-                  onChange={e => setMesaj(e.target.value)}
-                  rows={4}
-                  className="w-full bg-slate-700 text-white px-4 py-3 rounded-lg outline-none focus:ring-2 focus:ring-orange-500"
-                />
+  type="text"
+  placeholder="Telefon"
+  value={telefon}
+  onChange={e => { setTelefon(e.target.value); setHata(''); }}
+  className="w-full bg-slate-700 text-white px-4 py-3 rounded-lg outline-none focus:ring-2 focus:ring-orange-500"
+/>
+               <textarea
+  placeholder="Mesajınız"
+  value={mesaj}
+  onChange={e => { setMesaj(e.target.value); setHata(''); }}
+  rows={4}
+  className="w-full bg-slate-700 text-white px-4 py-3 rounded-lg outline-none focus:ring-2 focus:ring-orange-500"
+/>
                 <button
                   onClick={formGonder}
                   className="w-full bg-orange-500 text-white py-3 rounded-lg hover:bg-orange-600 transition font-semibold"
@@ -83,5 +114,6 @@ function Iletisim() {
     </section>
   );
 }
+
 
 export default Iletisim;
